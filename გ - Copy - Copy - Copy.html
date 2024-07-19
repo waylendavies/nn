@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>მიღება–ჩაბარების აქტი</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.1.2/docx.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group textarea {
+            resize: vertical;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>მიღება–ჩაბარების აქტი</h1>
+    <div class="form-group">
+        <label for="number">დოკუმენტის №</label>
+        <input type="text" id="number" placeholder="სქემატური ნომერი" />
+    </div>
+    <div class="form-group">
+        <label for="date">თარიღი</label>
+        <input type="text" id="date" placeholder="თარიღი" />
+    </div>
+    <div class="form-group">
+        <label for="company">დამკვეთის დასახელება</label>
+        <input type="text" id="company" placeholder="შპს „დამკვეთი“" />
+    </div>
+    <div class="form-group">
+        <label for="code">საიდენტიფიკაციო კოდი</label>
+        <input type="text" id="code" placeholder="კოდი" />
+    </div>
+    <div class="form-group">
+        <label for="representative">დამკვეთის წარმომადგენელი</label>
+        <input type="text" id="representative" placeholder="დამკვეთის წარმომადგენელი" />
+    </div>
+    <div class="form-group">
+        <label for="description">მომსახურების აღწერა</label>
+        <textarea id="description" rows="4" placeholder="მომსახურების აღწერა"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="amount">ღირებულება</label>
+        <input type="text" id="amount" placeholder="ღირებულება" />
+    </div>
+    <div class="form-group">
+        <label for="signer">ხელმომწერი</label>
+        <input type="text" id="signer" placeholder="ხელმომწერი" />
+    </div>
+    <button onclick="generateDocument()">დოკუმენტის გენერირება</button>
+
+    <script>
+        // Check if `docx` library is loaded
+        if (typeof docx === 'undefined') {
+            console.error('docx library is not loaded');
+        } else {
+            console.log('docx library is loaded');
+        }
+
+        async function generateDocument() {
+            const { Document, Packer, Paragraph, TextRun, Table, TableCell, TableRow, WidthType, BorderStyle } = docx;
+
+            // Get form values
+            const number = document.getElementById('number').value;
+            const date = document.getElementById('date').value;
+            const company = document.getElementById('company').value;
+            const code = document.getElementById('code').value;
+            const representative = document.getElementById('representative').value;
+            const description = document.getElementById('description').value;
+            const amount = document.getElementById('amount').value;
+            const signer = document.getElementById('signer').value;
+
+            // Create the document
+            const doc = new Document({
+                sections: [
+                    {
+                        properties: {},
+                        children: [
+                            new Paragraph({
+                                text: 'მიღება–ჩაბარების აქტი',
+                                heading: docx.HeadingLevel.HEADING_1,
+                                alignment: docx.AlignmentType.CENTER,
+                            }),
+                            new Paragraph({
+                                text: '(ერთჯერადი მომსახურება)',
+                                alignment: docx.AlignmentType.CENTER,
+                            }),
+                            new Paragraph({
+                                text: `№ ${number}`,
+                                alignment: docx.AlignmentType.CENTER,
+                            }),
+                            new Paragraph({
+                                text: `წინამდებარე მიღება-ჩაბარების აქტი გაფორმებულია ${date} ქ. თბილისში, შემდეგ მხარეებს შორის:`,
+                                spacing: { after: 200 },
+                            }),
+                            new Paragraph({
+                                text: `1. შპს „${company}“, საიდენტიფიკაციო კოდი ${code}, მისი უფლებამოსილი წარმომადგენელის, ${representative} სახით შემდგომი წოდებული როგორც „დამკვეთი“;`,
+                            }),
+                            new Paragraph({
+                                text: `2. მცირე ბიზნესის სტატუსის მქონე ფიზიკური პირი ირაკლი ნადირაძე, პირადი ნომერი 590000000, შემდგომში წოდებული როგორც „შემსრულებელი“;`,
+                            }),
+                            new Paragraph({
+                                text: 'მხარეები წინამდებარე მიღება-ჩაბარების აქტზე (შემდეგში „აქტი“) ხელის მოწერით ვთანხმდებით შემდეგზე:',
+                            }),
+                            new Paragraph({
+                                text: '1. მხარეების ზეპირსიტყვიერი შეთანხმების საფუძველზე, წინამდებარე „აქტის“ გაფორმების დღეს, „შემსრულებელმა“ მიაწოდა, ხოლო „დამკვეთმა“ მიიღო წინამდებარე აქტით განსაზღვრული შემდეგი “მომსახურება”:',
+                            }),
+                            new Paragraph({
+                                text: `„მომსახურების“ ტიპი: რბილი ავეჯის ქიმწმენდა`,
+                            }),
+                            new Paragraph({
+                                text: `„მომსახურების“ აღწერა: ${description}`,
+                            }),
+                            new Paragraph({
+                                text: `ქიმწმენდის „მომსახურების“ ღირებულება, რომელიც „დამკვეთმა“ შემსრულებელს უნდა გადაუხადოს არის ${amount} ლარი.`,
+                            }),
+                            new Paragraph({
+                                text: 'გაწვეული “მომსახურების“ თაობაზე მხარეებს ერთმანეთის მიმართ არანაირი პრეტენზიები არ გააჩნიათ.',
+                            }),
+                            new Table({
+                                rows: [
+                                    new TableRow({
+                                        children: [
+                                            new TableCell({
+                                                children: [new Paragraph({ text: '„დამკვეთი“', alignment: docx.AlignmentType.CENTER, bold: true })],
+                                                borders: {
+                                                    top: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                    bottom: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                    left: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                    right: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                },
+                                                width: {
+                                                    size: 50,
+                                                    type: WidthType.PERCENT,
+                                                },
+                                            }),
+                                            new TableCell({
+                                                children: [new Paragraph({ text: '' })],
+                                                borders: {
+                                                    top: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                    bottom: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                    left: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                    right: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                },
+                                                width: {
+                                                    size: 50,
+                                                    type: WidthType.PERCENT,
+                                                },
+                                            }),
+                                            new TableCell({
+                                                children: [new Paragraph({ text: '„შემსრულებელი“', alignment: docx.AlignmentType.CENTER, bold: true })],
+                                                borders: {
+                                                    top: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                    bottom: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                    left: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                    right: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                },
+                                                width: {
+                                                    size: 50,
+                                                    type: WidthType.PERCENT,
+                                                },
+                                            }),
+                                        ],
+                                    }),
+                                    new TableRow({
+                                        children: [
+                                            new TableCell({
+                                                children: [new Paragraph({ text: `${company}`, alignment: docx.AlignmentType.CENTER })],
+                                                borders: {
+                                                    bottom: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                    left: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                    right: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                },
+                                            }),
+                                            new TableCell({
+                                                children: [new Paragraph({ text: '' })],
+                                                borders: {
+                                                    bottom: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                    left: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                    right: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                },
+                                            }),
+                                            new TableCell({
+                                                children: [new Paragraph({ text: `${signer}`, alignment: docx.AlignmentType.CENTER })],
+                                                borders: {
+                                                    bottom: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                    left: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                    right: { style: BorderStyle.SINGLE, size: 1, space: 0 },
+                                                },
+                                            }),
+                                        ],
+                                    }),
+                                ],
+                            }),
+                        ],
+                    },
+                ],
+            });
+
+            // Convert the document to a Blob and generate a download link
+            const blob = await Packer.toBlob(doc);
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `migheba-chabarebis_akti_${number}.docx`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
+    </script>
+</body>
+</html>
